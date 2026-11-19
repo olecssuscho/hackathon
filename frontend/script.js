@@ -1,4 +1,6 @@
-const API_URL = 'http://localhost:8000';
+const API_URL = location.hostname === "localhost"
+    ? "http://localhost:8000"
+    : "https://hackathon-j2q3.onrender.com";
 const accessToken = sessionStorage.getItem('access_token');
 
 if (!accessToken) {

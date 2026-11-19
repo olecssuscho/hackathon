@@ -1,5 +1,5 @@
 const API_URL = location.hostname === "localhost"
-    ? "http://localhost:8080"
+    ? "http://localhost:8000"
     : "https://hackathon-j2q3.onrender.com";
 
 async function api(path, options = {}) {

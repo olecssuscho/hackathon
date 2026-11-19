@@ -14,6 +14,7 @@ class UserDB(Base):
     email : Mapped[str]
     password : Mapped[str]
     fullname : Mapped[str]
+    open_culture : Mapped[int]
 
     created_at : Mapped[datetime] = mapped_column(DateTime(timezone=True), default = lambda: datetime.now(timezone.utc))
 
@@ -37,4 +38,10 @@ class AttachmentDB(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     filename: Mapped[str] = mapped_column(String(255), unique=True, index=True)
-    file_url: Mapped[str] = mapped_column(Text)        
+    file_url: Mapped[str] = mapped_column(Text)
+    wiki_url: Mapped[str] = mapped_column(Text, nullable=True)       
+    lat: Mapped[float | None] = mapped_column(nullable=True)
+    lon: Mapped[float | None] = mapped_column(nullable=True)
+    name: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    destiption_uk: Mapped[str | None] = mapped_column(Text, nullable=True)
+    destiption_en: Mapped[str | None] = mapped_column(Text, nullable=True)

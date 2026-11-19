@@ -1,0 +1,19 @@
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import HTTPException
+from schemas.dbmodels import AttachmentDB
+
+async def get_file(lat: float, lon: float, db: AsyncSession):
+
+    result = await db.execute(select(AttachmentDB)
+            .filter(AttachmentDB.lat == lat, AttachmentDB.lon == lon))
+    item = result.scalar_one_or_none()
+
+    if not item:
+        raise HTTPException(status_code=404, detail="Точку не знайдено")
+
+    return {
+        "name": item.filename,
+        "photo_url": item.file_url,
+        "wiki_url": item.wiki_url,
+    }
