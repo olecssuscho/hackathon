@@ -4,6 +4,7 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
 
     DB_URL:str
+    FRONTEND_URL:str
     REFRESH_TOKEN_TIME_DAYS:int
     ACCESS_TOKEN_TIME_MINUTES:int
     ALGORITHM:str

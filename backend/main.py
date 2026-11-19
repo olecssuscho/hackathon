@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers import users
-
+from config import settings
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
@@ -12,6 +12,7 @@ app.add_middleware(
         "http://127.0.0.1",
         "http://127.0.0.1:5500",
         "http://127.0.0.1:8080",
+        settings.FRONTEND_URL
     ],
     allow_credentials=True,
     allow_methods=["*"],
