@@ -10,6 +10,9 @@ class Settings(BaseSettings):
     ALGORITHM:str
     SECRET_KEY:str
     ABS_DAY_LIFE:int
+    CLOUDINARY_KEY:str
+    CLOUDINARY_SECRET:str
+    CLOUDINARY_NAME:str
     model_config = ConfigDict(env_file = ".env", env_file_encoding = "utf-8")
 
 settings = Settings()

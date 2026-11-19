@@ -36,13 +36,5 @@ class AttachmentDB(Base):
     __tablename__ = "Attachments"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    filename: Mapped[str]
-    file_url: Mapped[str] = mapped_column(Text)          
-    public_id: Mapped[str] = mapped_column(String(255))  
-    content_type: Mapped[str]
-    size_bytes: Mapped[int]
-    uploaded_by: Mapped[int] = mapped_column(ForeignKey("Users.id"))
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True),
-        default=lambda: datetime.now(timezone.utc)
-    )
+    filename: Mapped[str] = mapped_column(String(255), unique=True, index=True)
+    file_url: Mapped[str] = mapped_column(Text)        

@@ -1,4 +1,6 @@
-const API_URL = 'http://localhost:8000';
+const API_URL = location.hostname === "localhost"
+    ? "http://localhost:8080"
+    : "https://hackathon-j2q3.onrender.com";
 
 async function api(path, options = {}) {
   const response = await fetch(`${API_URL}${path}`, options);
