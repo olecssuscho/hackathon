@@ -14,7 +14,7 @@ class UserDB(Base):
     email : Mapped[str]
     password : Mapped[str]
     fullname : Mapped[str]
-    open_culture : Mapped[int]
+    open_culture : Mapped[int] = mapped_column(nullable=True)
 
     created_at : Mapped[datetime] = mapped_column(DateTime(timezone=True), default = lambda: datetime.now(timezone.utc))
 
