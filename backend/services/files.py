@@ -16,4 +16,6 @@ async def get_file(lat: float, lon: float, db: AsyncSession):
         "name": item.filename,
         "photo_url": item.file_url,
         "wiki_url": item.wiki_url,
+        "description_short_uk" : item.destiption_uk,
+        "description_short_en" : item.destiption_en,
     }
