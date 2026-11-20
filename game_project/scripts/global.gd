@@ -13,6 +13,8 @@ var start_cell := Vector2i.ZERO    # cell inside that tile where the lat/lon fal
 var ui: UI
 var map: Map
 
+var dialogue_open: bool = false
+
 func _ready() -> void:
 	var f := latlon_to_tile_f(START_LAT, START_LON, ZOOM)
 	origin_tile = Vector2i(f.floor())

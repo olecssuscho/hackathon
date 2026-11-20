@@ -28,12 +28,13 @@ func _physics_process(delta: float) -> void:
 			dir = to_mouse / dist
 			step = minf(step, dist)   # don't overshoot the cursor
 
-	if dir == Vector2.ZERO:
-		anim.play("idle")
-		return
-		
-	anim.play("walking")
-	global_position += dir * step
+	if !g.dialogue_open:
+		if dir == Vector2.ZERO:
+			anim.play("idle")
+			return
+			
+		anim.play("walking")
+		global_position += dir * step
 	_update_grid()
 
 
