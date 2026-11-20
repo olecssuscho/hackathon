@@ -1,5 +1,8 @@
+from pathlib import Path
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from routers import users,files
 from config import settings
 app = FastAPI()
@@ -17,6 +20,11 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+)
+app.mount(
+    "/game",
+    StaticFiles(directory=Path(__file__).resolve().parent / "game", html=True),
+    name="game",
 )
 app.include_router(users.router)
 app.include_router(files.router)
