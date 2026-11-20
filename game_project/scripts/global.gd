@@ -11,6 +11,7 @@ var origin_tile := Vector2i.ZERO   # map tile the game starts in (chunk 0,0)
 var start_cell := Vector2i.ZERO    # cell inside that tile where the lat/lon falls
 
 var ui: UI
+var map: Map
 
 func _ready() -> void:
 	var f := latlon_to_tile_f(START_LAT, START_LON, ZOOM)

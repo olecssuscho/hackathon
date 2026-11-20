@@ -1,3 +1,4 @@
+class_name Map
 extends Node2D
 
 signal chunk_discovered(chunk: Vector2i)
@@ -12,6 +13,7 @@ var revealed := {}          # chunks requested (including ones still loading)
 var discovered := {}        # chunks whose tile image actually loaded
 var queue: Array[Vector2i] = []
 var active := 0
+var _poi_nodes: Array[Node2D] = []
 
 
 
@@ -23,7 +25,8 @@ var grid: GridOverlay
 
 
 func _ready() -> void:
-	add_to_group("map")   # must come before any POI is placed
+	add_to_group("map")
+	g.map = self
 	RenderingServer.set_default_clear_color(Color("6d7486ff"))   # fog colour
 
 	_load_pois()
@@ -39,7 +42,18 @@ func _load_pois() -> void:
 	for p in pois:
 		if p == null:
 			continue   # empty slot in the inspector
-		g.add_poi(p.latitude, p.longitude, p.poi_name, p.description, p.image_url)
+		_poi_nodes.append(g.add_poi(
+			p.latitude, p.longitude, p.poi_name, p.description, p.image_url
+		))
+
+
+func set_pois(new_pois: Array[POIData]) -> void:
+	for poi_node in _poi_nodes:
+		if is_instance_valid(poi_node):
+			poi_node.queue_free()
+	_poi_nodes.clear()
+	pois = new_pois
+	_load_pois()
 
 
 func chunk_of(world_pos: Vector2) -> Vector2i:
