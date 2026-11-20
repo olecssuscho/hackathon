@@ -13,7 +13,7 @@ async def get_file(lat: float, lon: float, db: AsyncSession):
         raise HTTPException(status_code=404, detail="Точку не знайдено")
 
     return {
-        "name": item.name or "",
+        "name": item.name,
         "photo_url": item.file_url,
         "wiki_url": item.wiki_url,
         "description_short_uk" : item.destiption_uk,
@@ -25,5 +25,5 @@ async def return_place_services(db:AsyncSession):
     items = result.scalars()
     res=[]
     for e in items:
-        res.append((e.lat,e.lon))
+        res.append((e.lat,e.lon,e.filename,e.file_url,e.wiki_url,e.destiption_uk,e.destiption_en))
     return res
