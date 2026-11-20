@@ -2,15 +2,21 @@ class_name UI
 extends CanvasLayer
 
 @onready var uianim: AnimationPlayer = $uianim
-@onready var text_name: Label = $vbox/name_panel/name
-@onready var text_desc: Label = $vbox/desk_panel/desc
-@onready var poi_preview: TextureRect = $preview_container/POI_Preview
+@onready var text_name: Label = $VBoxContainer/HBoxContainer/vbox/name_panel/name
+@onready var text_desc: Label = $VBoxContainer/HBoxContainer/vbox/desk_panel/desc
+@onready var poi_preview: TextureRect = $VBoxContainer/HBoxContainer/image_panel/POI_Preview
 
 var _preview_request: HTTPRequest
 
 
 func _ready() -> void:
 	g.ui = self
+
+func _physics_process(delta: float) -> void:
+	if g.dialogue_open:
+		visible = true
+	else:
+		visible = false
 
 
 func load_preview_from_url(url: String) -> void:
@@ -82,3 +88,7 @@ func _bytes_to_image(body: PackedByteArray, headers: PackedStringArray, url: Str
 				break
 
 	return image if err == OK else null
+
+
+func _on_close_pressed() -> void:
+	g.dialogue_open = false

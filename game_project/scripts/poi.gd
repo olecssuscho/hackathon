@@ -41,12 +41,12 @@ func _set_interactive(on: bool) -> void:
 
 func _on_interaction_body_entered(body: Node2D) -> void:
 	if body is Player:
-		g.ui.uianim.play("show_ui")
 		g.ui.text_name.text = poi_name
 		g.ui.text_desc.text  = poi_description
 		g.ui.load_preview_from_url(poi_img)
+		g.dialogue_open = true
 
 
 func _on_interaction_body_exited(body: Node2D) -> void:
 	if body is Player:
-		g.ui.uianim.play("hide_ui")
+		pass

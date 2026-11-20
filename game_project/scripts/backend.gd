@@ -73,11 +73,6 @@ func _load_place_services() -> void:
 	if g.map == null:
 		request_failed.emit("/get_coord", "Map node is not ready")
 		return
-	var points_label := g.map.get_node_or_null("../UI/points") as Label
-	if points_label == null:
-		request_failed.emit("/get_coord", "Points label was not found")
-		return
-	points_label.text = "Loading places..."
 
 	var response: Variant = await _request(HTTPClient.METHOD_GET, "/get_coord")
 	if not response is Array:
@@ -85,7 +80,7 @@ func _load_place_services() -> void:
 			request_failed.emit("/get_coord", "Expected an array of coordinate pairs")
 		return
 
-	var place_lines := PackedStringArray()
+	var loaded_pois: Array[POIData] = []
 	for coordinates in response:
 		if not coordinates is Array or coordinates.size() != 2:
 			request_failed.emit("/get_coord", "Expected each place to contain latitude and longitude")
@@ -111,23 +106,27 @@ func _load_place_services() -> void:
 			request_failed.emit(details_path, "Expected place details as an object")
 			return
 
-		var line := "%s, %s" % [str(latitude), str(longitude)]
+		var poi := POIData.new()
+		poi.latitude = latitude
+		poi.longitude = longitude
 		var place_name: Variant = details.get("name", "")
-		if place_name is String and not place_name.is_empty():
-			line += " — " + place_name
-		place_lines.append(line)
-		points_label.text = "\n".join(place_lines)
+		if place_name is String:
+			poi.poi_name = place_name
+		var description: Variant = details.get("description_short_uk", "")
+		if not description is String or description.is_empty():
+			description = details.get("description_short_en", "")
+		if description is String:
+			poi.description = description
+		var image_url: Variant = details.get("photo_url", "")
+		if image_url is String:
+			poi.image_url = image_url
+		loaded_pois.append(poi)
 
-	if place_lines.is_empty():
-		points_label.text = "No places returned."
+	g.map.set_pois(loaded_pois)
 
 
 func _on_request_failed(endpoint: String, error: String) -> void:
 	push_error("Backend request failed (%s): %s" % [endpoint, error])
-	if g.map != null:
-		var points_label := g.map.get_node_or_null("../UI/points") as Label
-		if points_label != null:
-			points_label.text = "Backend error (%s): %s" % [endpoint, error]
 
 
 func submit_score(score: int) -> void:
