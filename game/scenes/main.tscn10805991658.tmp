@@ -1,0 +1,133 @@
+[gd_scene format=3 uid="uid://dnhsxuj0cahr"]
+
+[ext_resource type="PackedScene" uid="uid://dr2iw5q253xea" path="res://scenes/player.tscn" id="1_0wfyh"]
+[ext_resource type="Script" uid="uid://cxdlpkrflqxpe" path="res://scripts/ui.gd" id="1_jyhfs"]
+[ext_resource type="Texture2D" uid="uid://br3v568eyef3c" path="res://sprites/9side.png" id="1_sugp2"]
+[ext_resource type="Script" uid="uid://bkptbxad51p01" path="res://scripts/map.gd" id="4_jyhfs"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4r1ic"]
+texture = ExtResource("1_sugp2")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="Theme" id="Theme_27xgj"]
+Panel/styles/panel = SubResource("StyleBoxTexture_4r1ic")
+
+[sub_resource type="Animation" id="Animation_sugp2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("vbox:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 1019)]
+}
+
+[sub_resource type="Animation" id="Animation_jyhfs"]
+resource_name = "hide_uid"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("vbox:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(0.5, 0.1538931),
+"update": 0,
+"values": [Vector2(0, 686), Vector2(0, 1008)]
+}
+
+[sub_resource type="Animation" id="Animation_tbgi4"]
+resource_name = "show_ui"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("vbox:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.1538931, 1),
+"update": 0,
+"values": [Vector2(0, 1008), Vector2(0, 686)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tefeu"]
+_data = {
+&"RESET": SubResource("Animation_sugp2"),
+&"hide_ui": SubResource("Animation_jyhfs"),
+&"show_ui": SubResource("Animation_tbgi4")
+}
+
+[node name="Node2D" type="Node2D" unique_id=481197220]
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=1999216141]
+script = ExtResource("1_jyhfs")
+
+[node name="Label" type="Label" parent="UI" unique_id=945829431]
+offset_left = 14.0
+offset_top = 14.0
+offset_right = 54.0
+offset_bottom = 37.0
+text = "trt"
+
+[node name="vbox" type="VBoxContainer" parent="UI" unique_id=1327811082]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 19.0
+offset_bottom = 332.99963
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="name_panel" type="Panel" parent="UI/vbox" unique_id=189854581]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+theme = SubResource("Theme_27xgj")
+
+[node name="name" type="Label" parent="UI/vbox/name_panel" unique_id=2058110631]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="desk_panel" type="Panel" parent="UI/vbox" unique_id=1396938314]
+layout_mode = 2
+size_flags_vertical = 3
+theme = SubResource("Theme_27xgj")
+
+[node name="desc" type="Label" parent="UI/vbox/desk_panel" unique_id=2028362937]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 11.0
+offset_top = 11.0
+offset_right = -11.0
+offset_bottom = -11.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Description"
+
+[node name="uianim" type="AnimationPlayer" parent="UI" unique_id=1223948239]
+libraries/ = SubResource("AnimationLibrary_tefeu")
+
+[node name="Player" parent="." unique_id=512037682 instance=ExtResource("1_0wfyh")]
+
+[node name="Map" type="Node2D" parent="." unique_id=566054435]
+script = ExtResource("4_jyhfs")

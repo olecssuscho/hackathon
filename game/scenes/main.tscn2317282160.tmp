@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://dnhsxuj0cahr"]
+
+[ext_resource type="Script" uid="uid://dfv072qx5h2q6" path="res://scripts/main.gd" id="1_sugp2"]
+[ext_resource type="Script" uid="uid://cv2vg56ed8x4h" path="res://scripts/player.gd" id="2_sugp2"]
+[ext_resource type="Texture2D" uid="uid://cq2h0qb3mgjp4" path="res://sprites/fogfinder.png" id="3_jyhfs"]
+
+[node name="Node2D" type="Node2D" unique_id=481197220]
+script = ExtResource("1_sugp2")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1999216141]
+
+[node name="Label" type="Label" parent="CanvasLayer" unique_id=945829431]
+offset_left = 14.0
+offset_top = 14.0
+offset_right = 54.0
+offset_bottom = 37.0
+text = "trt"
+
+[node name="Player" type="Node2D" parent="." unique_id=1057955925]
+script = ExtResource("2_sugp2")
+
+[node name="Fogfinder" type="Sprite2D" parent="Player" unique_id=798343919]
+texture = ExtResource("3_jyhfs")
+
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=1320180425]
+zoom = Vector2(2.715, 2.715)
+position_smoothing_enabled = true
