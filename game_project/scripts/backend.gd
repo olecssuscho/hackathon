@@ -3,17 +3,13 @@ extends Node
 signal request_failed(endpoint: String, error: String)
 signal score_submitted(ok: bool)
 
-const LOCAL_BASE_URL := "http://127.0.0.1:8000"
-var base_url := LOCAL_BASE_URL
+const BASE_URL := "https://hackathon-j2q3.onrender.com"
 var auth_token := ""
 var _auth_callback: JavaScriptObject
 
 func _ready() -> void:
 	request_failed.connect(_on_request_failed)
 	if OS.has_feature("web"):
-		var page_origin: Variant = JavaScriptBridge.eval("window.location.origin")
-		if page_origin is String and not page_origin.is_empty():
-			base_url = page_origin
 		_listen_for_auth_token()
 	_load_place_services()
 
@@ -44,7 +40,7 @@ func _request(method: HTTPClient.Method, path: String, body := {}) -> Variant:
 	var headers := ["Content-Type: application/json"]
 	if auth_token != "":
 		headers.append("Authorization: Bearer " + auth_token)
-	var err := http.request(base_url + path, headers, method, JSON.stringify(body))
+	var err := http.request(BASE_URL + path, headers, method, JSON.stringify(body))
 	if err != OK:
 		http.queue_free()
 		request_failed.emit(path, "Could not start request: %s" % error_string(err))
@@ -56,7 +52,7 @@ func _request(method: HTTPClient.Method, path: String, body := {}) -> Variant:
 	if result[0] != HTTPRequest.RESULT_SUCCESS:
 		var error_message := "Request failed with result %d" % result[0]
 		if result[0] == HTTPRequest.RESULT_CONNECTION_ERROR:
-			error_message = "Connection error to %s" % (base_url + path)
+			error_message = "Connection error to %s" % (BASE_URL + path)
 		request_failed.emit(path, error_message)
 		return null
 	if result[1] < 200 or result[1] >= 300:
