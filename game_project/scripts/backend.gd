@@ -37,10 +37,14 @@ func _on_auth_message(args: Array) -> void:
 func _request(method: HTTPClient.Method, path: String, body := {}) -> Variant:
 	var http := HTTPRequest.new()
 	add_child(http)
-	var headers := ["Content-Type: application/json"]
+	var headers := PackedStringArray()
+	var request_body := ""
+	if method != HTTPClient.METHOD_GET and method != HTTPClient.METHOD_HEAD:
+		headers.append("Content-Type: application/json")
+		request_body = JSON.stringify(body)
 	if auth_token != "":
 		headers.append("Authorization: Bearer " + auth_token)
-	var err := http.request(BASE_URL + path, headers, method, JSON.stringify(body))
+	var err := http.request(BASE_URL + path, headers, method, request_body)
 	if err != OK:
 		http.queue_free()
 		request_failed.emit(path, "Could not start request: %s" % error_string(err))
