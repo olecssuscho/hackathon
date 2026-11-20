@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://br3v568eyef3c" path="res://sprites/9side.png" id="1_sugp2"]
 [ext_resource type="Script" uid="uid://bkptbxad51p01" path="res://scripts/map.gd" id="4_jyhfs"]
 [ext_resource type="Script" uid="uid://bcfcanb2rehk7" path="res://scripts/POIData.gd" id="5_tbgi4"]
+[ext_resource type="Script" uid="uid://conjphpxwshwn" path="res://scripts/backend.gd" id="6_tefeu"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4r1ic"]
 texture = ExtResource("1_sugp2")
@@ -208,3 +209,6 @@ stretch_mode = 4
 [node name="Map" type="Node2D" parent="." unique_id=566054435]
 script = ExtResource("4_jyhfs")
 pois = Array[ExtResource("5_tbgi4")]([SubResource("Resource_jyhfs"), null])
+
+[node name="backend" type="Node" parent="." unique_id=683812222]
+script = ExtResource("6_tefeu")
