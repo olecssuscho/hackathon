@@ -25,5 +25,5 @@ async def return_place_services(db:AsyncSession):
     items = result.scalars()
     res=[]
     for e in items:
-        res.append((e.lat,e.lon))
+        res.append((e.lat,e.lon,e.filename,e.file_url,e.wiki_url,e.destiption_uk,e.destiption_en))
     return res
