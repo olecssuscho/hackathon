@@ -3,12 +3,35 @@ extends Node
 signal request_failed(endpoint: String, error: String)
 signal score_submitted(ok: bool)
 
-const BASE_URL := "http://localhost:8080"
+const BASE_URL := "http://localhost:8000"
 var auth_token := ""
+var _auth_callback: JavaScriptObject
 
 func _ready() -> void:
 	request_failed.connect(_on_request_failed)
+	if OS.has_feature("web"):
+		_listen_for_auth_token()
 	_load_place_services()
+
+
+func _listen_for_auth_token() -> void:
+	_auth_callback = JavaScriptBridge.create_callback(_on_auth_message)
+	var window: JavaScriptObject = JavaScriptBridge.get_interface("window")
+	window.set("godotAuthTokenCallback", _auth_callback)
+	JavaScriptBridge.eval("""
+		window.addEventListener("message", (event) => {
+			if (event.source !== window.parent || event.data?.type !== "AUTH_TOKEN") return;
+			window.godotAuthTokenCallback(event.data.accessToken);
+		});
+		window.parent.postMessage({ type: "GODOT_READY" }, "*");
+	""")
+
+
+func _on_auth_message(args: Array) -> void:
+	if args.size() != 1 or typeof(args[0]) != TYPE_STRING or args[0].is_empty():
+		push_error("Frontend sent an invalid access token")
+		return
+	auth_token = args[0]
 
 
 func _request(method: HTTPClient.Method, path: String, body := {}) -> Variant:
@@ -64,10 +87,28 @@ func _load_place_services() -> void:
 			request_failed.emit("/get_coord", "Coordinates are outside valid latitude/longitude ranges")
 			return
 
+		var details_path := "/place?lat=%s&lon=%s" % [str(latitude), str(longitude)]
+		var details: Variant = await _request(HTTPClient.METHOD_GET, details_path)
+		if details == null:
+			continue
+		if not details is Dictionary:
+			request_failed.emit(details_path, "Expected place details as an object")
+			return
+
 		var poi := POIData.new()
-		poi.poi_name = "Place"
+		var poi_name: Variant = details.get("name", "")
+		if poi_name is String:
+			poi.poi_name = poi_name
 		poi.latitude = latitude
 		poi.longitude = longitude
+		var description: Variant = details.get("description_short_uk", "")
+		if not description is String or description.is_empty():
+			description = details.get("description_short_en", "")
+		if description is String:
+			poi.description = description
+		var image_url: Variant = details.get("photo_url", "")
+		if image_url is String:
+			poi.image_url = image_url
 		place_pois.append(poi)
 
 	if g.map == null:

@@ -22,6 +22,7 @@ const SHOW_GRID := true
 var grid: GridOverlay
 
 @export var pois: Array[POIData] = []
+@onready var points: Label = $"../UI/points"
 
 
 func _ready() -> void:
@@ -30,6 +31,8 @@ func _ready() -> void:
 	RenderingServer.set_default_clear_color(Color("6d7486ff"))   # fog colour
 
 	_load_pois()
+	for POIData in pois:
+		points.text += "\n" + str(POIData.latitude) + " " + str(POIData.longitude)
 	load_discovered()
 	if SHOW_GRID:
 		grid = GridOverlay.new()

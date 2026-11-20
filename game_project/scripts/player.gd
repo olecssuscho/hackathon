@@ -1,7 +1,7 @@
 class_name Player
 extends CharacterBody2D
 
-const SPEED := 120.0         # pixels per second
+const SPEED := 520.0         # pixels per second
 const STOP_DISTANCE := 2.0   # stop when this close to the cursor (pixels)
 
 var cell := Vector2i.ZERO

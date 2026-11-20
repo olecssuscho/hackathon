@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://bkptbxad51p01" path="res://scripts/map.gd" id="4_jyhfs"]
 [ext_resource type="Script" uid="uid://bcfcanb2rehk7" path="res://scripts/POIData.gd" id="5_tbgi4"]
 [ext_resource type="Script" uid="uid://conjphpxwshwn" path="res://scripts/backend.gd" id="6_tefeu"]
+[ext_resource type="Texture2D" uid="uid://b61h63efil8c7" path="res://icon.svg" id="7_o6xl0"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4r1ic"]
 texture = ExtResource("1_sugp2")
@@ -204,11 +205,22 @@ grow_horizontal = 2
 grow_vertical = 2
 stretch_mode = 4
 
+[node name="points" type="Label" parent="UI" unique_id=1414276529]
+offset_left = 23.0
+offset_top = 134.0
+offset_right = 541.0
+offset_bottom = 608.0
+
 [node name="Player" parent="." unique_id=512037682 instance=ExtResource("1_0wfyh")]
 
 [node name="Map" type="Node2D" parent="." unique_id=566054435]
 script = ExtResource("4_jyhfs")
-pois = Array[ExtResource("5_tbgi4")]([SubResource("Resource_jyhfs"), null])
+pois = Array[ExtResource("5_tbgi4")]([SubResource("Resource_jyhfs")])
 
 [node name="backend" type="Node" parent="." unique_id=683812222]
 script = ExtResource("6_tefeu")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1643729056]
+offset_right = 181.0
+offset_bottom = 160.0
+texture = ExtResource("7_o6xl0")
