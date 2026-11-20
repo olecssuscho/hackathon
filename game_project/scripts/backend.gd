@@ -9,6 +9,9 @@ var _auth_callback: JavaScriptObject
 
 func _ready() -> void:
 	request_failed.connect(_on_request_failed)
+	if g.LOAD_POIS_LOCALLY:
+		g.load_local_pois()
+		return
 	if OS.has_feature("web"):
 		_listen_for_auth_token()
 	_load_place_services()
@@ -82,8 +85,8 @@ func _load_place_services() -> void:
 
 	var loaded_pois: Array[POIData] = []
 	for coordinates in response:
-		if not coordinates is Array or coordinates.size() != 2:
-			request_failed.emit("/get_coord", "Expected each place to contain latitude and longitude")
+		if not coordinates is Array or (coordinates.size() != 2 and coordinates.size() < 7):
+			request_failed.emit("/get_coord", "Expected each place to contain coordinates and optional place details")
 			return
 		if coordinates[0] == null or coordinates[1] == null:
 			continue
@@ -98,13 +101,23 @@ func _load_place_services() -> void:
 			request_failed.emit("/get_coord", "Coordinates are outside valid latitude/longitude ranges")
 			return
 
-		var details_path := "/place?lat=%s&lon=%s" % [str(latitude), str(longitude)]
-		var details: Variant = await _request(HTTPClient.METHOD_GET, details_path)
-		if details == null:
-			continue
-		if not details is Dictionary:
-			request_failed.emit(details_path, "Expected place details as an object")
-			return
+		var details: Dictionary = {}
+		if coordinates.size() >= 7:
+			details = {
+				"name": coordinates[2],
+				"photo_url": coordinates[3],
+				"description_short_uk": coordinates[5],
+				"description_short_en": coordinates[6],
+			}
+		else:
+			var details_path := "/place?lat=%s&lon=%s" % [str(latitude), str(longitude)]
+			var place_details: Variant = await _request(HTTPClient.METHOD_GET, details_path)
+			if place_details == null:
+				continue
+			if not place_details is Dictionary:
+				request_failed.emit(details_path, "Expected place details as an object")
+				return
+			details = place_details
 
 		var poi := POIData.new()
 		poi.latitude = latitude

@@ -20,6 +20,8 @@ func _physics_process(delta: float) -> void:
 
 
 func load_preview_from_url(url: String) -> void:
+	poi_preview.texture = null
+
 	# Cancel any in-flight request so an old image can't overwrite a newer one
 	if _preview_request:
 		_preview_request.cancel_request()

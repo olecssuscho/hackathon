@@ -6,6 +6,8 @@ const TILE := 16             # one grid cell, in pixels
 const TILE_PX := 256         # one map tile, in pixels
 const CELLS_PER_TILE := 16
 const ZOOM := 18
+var LOAD_POIS_LOCALLY: bool = false
+const POIS_CSV_PATH := "res://data/pois.csv"
 
 var origin_tile := Vector2i.ZERO   # map tile the game starts in (chunk 0,0)
 var start_cell := Vector2i.ZERO    # cell inside that tile where the lat/lon falls
@@ -20,6 +22,42 @@ func _ready() -> void:
 	origin_tile = Vector2i(f.floor())
 	start_cell = Vector2i(((f - Vector2(origin_tile)) * CELLS_PER_TILE).floor())
 	print("origin tile: ", origin_tile, "  start cell: ", start_cell)
+
+
+func load_local_pois() -> bool:
+	var file := FileAccess.open(POIS_CSV_PATH, FileAccess.READ)
+	if file == null:
+		push_error("Could not open local POI CSV: %s" % POIS_CSV_PATH)
+		return false
+
+	file.get_csv_line(";") # Header
+	var loaded_pois: Array[POIData] = []
+	var row_number := 1
+	while not file.eof_reached():
+		row_number += 1
+		var row := file.get_csv_line(";")
+		if row.size() == 1 and row[0].is_empty():
+			continue
+		if row.size() < 9:
+			push_error("Invalid POI CSV row %d: expected at least 9 columns" % row_number)
+			return false
+		if not row[4].is_valid_float() or not row[5].is_valid_float():
+			push_error("Invalid coordinates in POI CSV row %d" % row_number)
+			return false
+
+		var poi := POIData.new()
+		poi.latitude = float(row[4])
+		poi.longitude = float(row[5])
+		poi.poi_name = row[6].strip_edges()
+		poi.image_url = row[2].strip_edges()
+		poi.description = row[7].strip_edges()
+		loaded_pois.append(poi)
+
+	if map == null:
+		push_error("Cannot load local POIs: map node is not ready")
+		return false
+	map.set_pois(loaded_pois)
+	return true
 
 
 ## Fractional tile coordinates, so the position inside the tile is kept.
