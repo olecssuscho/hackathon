@@ -19,3 +19,11 @@ async def get_file(lat: float, lon: float, db: AsyncSession):
         "description_short_uk" : item.destiption_uk,
         "description_short_en" : item.destiption_en,
     }
+
+async def return_place_services(db:AsyncSession):
+    result = await db.execute(select(AttachmentDB))
+    items = result.scalars()
+    res=[]
+    for e in items:
+        res.append((e.lat,e.lon))
+    return res
