@@ -106,6 +106,7 @@ func _load_place_services() -> void:
 			details = {
 				"name": coordinates[2],
 				"photo_url": coordinates[3],
+				"wiki_url": coordinates[4],
 				"description_short_uk": coordinates[5],
 				"description_short_en": coordinates[6],
 			}
@@ -133,6 +134,9 @@ func _load_place_services() -> void:
 		var image_url: Variant = details.get("photo_url", "")
 		if image_url is String:
 			poi.image_url = image_url
+		var wiki_url: Variant = details.get("wiki_url", "")
+		if wiki_url is String:
+			poi.wiki_url = wiki_url
 		loaded_pois.append(poi)
 
 	g.map.set_pois(loaded_pois)

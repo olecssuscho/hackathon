@@ -73,19 +73,29 @@ layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("2_o6xl0")
 
-[node name="desc" type="Label" parent="UI/VBoxContainer/HBoxContainer/vbox/desk_panel" unique_id=2028362937]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/VBoxContainer/HBoxContainer/vbox/desk_panel" unique_id=1024907508]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 11.0
-offset_top = 11.0
-offset_right = -11.0
-offset_bottom = -11.0
+offset_left = 7.0
+offset_top = 9.0
+offset_right = -7.0
+offset_bottom = -9.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="desc" type="Label" parent="UI/VBoxContainer/HBoxContainer/vbox/desk_panel/VBoxContainer" unique_id=2028362937]
+layout_mode = 2
+size_flags_vertical = 3
 text = "Description"
 autowrap_mode = 3
+
+[node name="LinkButton" type="LinkButton" parent="UI/VBoxContainer/HBoxContainer/vbox/desk_panel/VBoxContainer" unique_id=372031339]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+text = "Сторінка на Wiki"
+uri = "https://www.wikipedia.org/"
 
 [node name="image_panel" type="Panel" parent="UI/VBoxContainer/HBoxContainer" unique_id=274505592]
 custom_minimum_size = Vector2(384, 0)

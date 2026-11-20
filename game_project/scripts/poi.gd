@@ -5,6 +5,7 @@ extends Node2D
 @export var poi_name: String = "Name"
 @export_multiline() var poi_description: String = "Description"
 @export var poi_img: String = "https://i.nuuls.com/St4DS.png"
+@export var wiki_url: String = ""
 
 func _ready() -> void:
 	visible = false
@@ -43,6 +44,7 @@ func _on_interaction_body_entered(body: Node2D) -> void:
 	if body is Player:
 		g.ui.text_name.text = poi_name
 		g.ui.text_desc.text  = poi_description
+		g.ui.set_wiki_url(wiki_url)
 		g.ui.load_preview_from_url(poi_img)
 		g.dialogue_open = true
 

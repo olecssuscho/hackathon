@@ -3,8 +3,9 @@ extends CanvasLayer
 
 @onready var uianim: AnimationPlayer = $uianim
 @onready var text_name: Label = $VBoxContainer/HBoxContainer/vbox/name_panel/name
-@onready var text_desc: Label = $VBoxContainer/HBoxContainer/vbox/desk_panel/desc
+@onready var text_desc: Label = $VBoxContainer/HBoxContainer/vbox/desk_panel/VBoxContainer/desc
 @onready var poi_preview: TextureRect = $VBoxContainer/HBoxContainer/image_panel/POI_Preview
+@onready var wiki_link: LinkButton = $VBoxContainer/HBoxContainer/vbox/desk_panel/VBoxContainer/LinkButton
 
 var _preview_request: HTTPRequest
 
@@ -17,6 +18,11 @@ func _physics_process(delta: float) -> void:
 		visible = true
 	else:
 		visible = false
+
+
+func set_wiki_url(url: String) -> void:
+	wiki_link.uri = url
+	wiki_link.disabled = url.is_empty()
 
 
 func load_preview_from_url(url: String) -> void:

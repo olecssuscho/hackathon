@@ -50,6 +50,7 @@ func load_local_pois() -> bool:
 		poi.longitude = float(row[5])
 		poi.poi_name = row[6].strip_edges()
 		poi.image_url = row[2].strip_edges()
+		poi.wiki_url = row[3].strip_edges()
 		poi.description = row[7].strip_edges()
 		loaded_pois.append(poi)
 
@@ -110,9 +111,11 @@ const POI_SCENE: PackedScene = preload("uid://5ywdyvi6y0cy")
 
 func add_poi(lat: float, lon: float, poi_name := "Name",
 		poi_description := "Description",
-		poi_img := "https://i.nuuls.com/St4DS.png", id := "") -> Node2D:
+		poi_img := "https://i.nuuls.com/St4DS.png",
+		poi_wiki_url := "", id := "") -> Node2D:
 	var poi = POI_SCENE.instantiate()   # untyped on purpose, so the exported vars can be set
 	poi.poi_name = poi_name
 	poi.poi_description = poi_description
 	poi.poi_img = poi_img
+	poi.wiki_url = poi_wiki_url
 	return place(poi, lat, lon, false, id)

@@ -6,3 +6,4 @@ extends Resource
 @export var longitude := 0.0
 @export_multiline var description := ""
 @export var image_url := ""
+@export var wiki_url := ""

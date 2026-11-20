@@ -43,7 +43,7 @@ func _load_pois() -> void:
 		if p == null:
 			continue   # empty slot in the inspector
 		_poi_nodes.append(g.add_poi(
-			p.latitude, p.longitude, p.poi_name, p.description, p.image_url
+			p.latitude, p.longitude, p.poi_name, p.description, p.image_url, p.wiki_url
 		))
 
 
